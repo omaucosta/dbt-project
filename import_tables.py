@@ -9,7 +9,7 @@ base = os.getcwd()
 path_tables = os.path.join(base, 'tables')
 tables = os.listdir(path_tables)
 password = getpass('Database password:')
-
+ 
 #%% conection
 con = create_engine(f'postgresql+psycopg2://postgres:{password}@localhost:5432/postgres')
 

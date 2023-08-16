@@ -1,0 +1,107 @@
+version: 2
+
+models:
+  - name: location
+    columns:
+      - name: city_id
+        description: "Chave primária da tabela"
+        tests:
+          - unique
+          - not_null
+      - name: state_id
+        description: ""
+        tests:
+          - not_null
+      - name: country_id
+        description: ""
+        tests:
+          - not_null
+  
+  - name: account_customers
+    columns:
+      - name: account_id
+        description: "Chave primária da tabela"
+        tests:
+          - unique
+          - not_null
+      - name: customer_id
+        description: ""
+        tests:
+          - unique
+          - not_null
+      - name: city_id
+        description: ""
+        tests:
+          - not_null
+          - relationships:
+              to: ref('location')
+              field: city_id
+      - name: account_status
+        description: ""
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['active', 'inactive']
+      - name: customer_cpf
+        description: ""
+        tests:
+          - unique
+          - not_null
+
+  - name: financial_movements
+    columns:
+      - name: movement_id
+        description: "Chave primária da tabela"
+        tests:
+          - unique
+          - not_null
+      - name: account_id
+        description: ""
+        tests:
+          - not_null
+          - relationships:
+              to: ref('account_customers')
+              field: account_id
+      - name: movement_requested_at
+        description: ""
+        tests:
+          - not_null
+          - relationships:
+              to: ref('d_time')
+              field: time_id
+      - name: movement_completed_at
+        description: ""
+        tests:
+          - relationships:
+              to: ref('d_time')
+              field: time_id
+      - name: movement_status
+        description: ""
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['completed', 'failed']
+      - name: movement_in_or_out
+        description: ""
+        tests:
+          - not_null
+          - accepted_values:
+              values: ['in', 'out']
+      - name: movement_type
+        description: ""
+        tests:
+          - accepted_values:
+              values: ['pix', 'transfer']
+  
+  - name: d_time
+    columns:
+      - name: time_id
+        description: "Chave primária da tabela"
+        tests:
+          - unique
+          - not_null
+      - name: action_timestamp
+        description: ""
+        tests:
+          - unique
+          - not_null
