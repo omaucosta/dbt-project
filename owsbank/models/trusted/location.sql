@@ -1,14 +1,14 @@
 {{ config(materialized='table') }}
 
-select
+SELECT
   c.city_id,
   c.state_id,
   s.country_id,
   c.city,
   s.state,
   co.country
-FROM raw.city c
-  left join raw.state s
-    on s.state_id = c.state_id
-  left join raw.country co
-    on co.country_id = s.country_id
+FROM {{ source('raw', 'city') }} AS c
+  LEFT JOIN {{ source('raw', 'state') }} AS s
+    ON s.state_id = c.state_id
+  LEFT JOIN {{ source('raw', 'country') }} AS co
+    ON co.country_id = s.country_id
